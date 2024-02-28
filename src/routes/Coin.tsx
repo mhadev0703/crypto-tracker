@@ -29,21 +29,23 @@ interface RouteParams {
 }
 
 interface LocationState {
-    coinId: string;
+    state: {
+        name: string;
+        rank: number;
+    }
 }
 
 function Coin() {
     const [loading, setLoading] = useState(true);
-    const { coinId } = useParams<RouteParams>();
-    const { state } = useLocation() as unknown as LocationState;
+    const { coinId } = useParams() as unknown as RouteParams;
+    const { state } = useLocation() as LocationState;
     return (
         <Container>
             <Header>
-                <Title>{{state.name}}</Title>
+                <Title>{ state?.name || "Loading..." }</Title>
             </Header>
-            {loading ? (
-                <Loader>Loading...</Loader>
-            ) : null}</Container> 
+            {loading ? (<Loader>Loading...</Loader>) : null}
+        </Container> 
     );
 }
 export default Coin;
