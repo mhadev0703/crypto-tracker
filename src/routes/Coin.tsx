@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import axios from 'axios';
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -41,22 +42,28 @@ function Coin() {
     const { state } = useLocation() as LocationState;
     const [info, setInfo] = useState({});
     const [priceInfo, setPriceInfo] = useState({});
+
     useEffect(() => {
-        (async () => {
-            const infoData = await (
-                await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-            ).json();
-            const priceData = await (
-                await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-            ).json();
-            setInfo(infoData);
-            setPriceInfo(priceData);
-        })();
-    }, []);
+        const fetchData = async () => {
+            try {
+                const infoResponse = await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId}`);
+                const infoData = infoResponse.data;
+                
+                const priceResponse = await axios.get(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
+                const priceData = priceResponse.data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false); 
+            }
+        };
+        fetchData();
+    }, []); 
+
     return (
         <Container>
             <Header>
-                <Title>{ state?.name || "Loading..." }</Title>
+                <Title>{state?.name || "Loading..."}</Title>
             </Header>
             {loading ? (<Loader>Loading...</Loader>) : null}
         </Container> 
