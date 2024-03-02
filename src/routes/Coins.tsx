@@ -66,11 +66,16 @@ interface CoinInterface {
 function Coins() {
     const [coins, setCoins] = useState<CoinInterface[]>([]);
     const [loading, setLoading] = useState(true);
-    const getCoins = async() => {
-        const response = await axios("https://api.coinpaprika.com/v1/coins");
-        setCoins(response.data.slice(0, 100));
-        setLoading(false);
-    };
+    const getCoins = async () => {
+        try {
+          const response = await axios("https://api.coinpaprika.com/v1/coins");
+          setCoins(response.data.slice(0, 100));
+        } catch (error) {
+          console.error("Error fetching coins:", error);
+        } finally {
+          setLoading(false); 
+        }
+      };
 
     useEffect(() => {
         getCoins();
