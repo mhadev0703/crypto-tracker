@@ -58,7 +58,7 @@ function Coin() {
             }
         };
         fetchData();
-    }, []); 
+    }, [coinId]); 
 
     return (
         <Container>
