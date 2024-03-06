@@ -45,7 +45,7 @@ interface InfoData {
     is_active: boolean;
     type: string;
     logo: string;
-    tags: string[];
+    tags: string;
     team: string[];
     description: string;
     message: string;
@@ -71,7 +71,7 @@ function Coin() {
     const [loading, setLoading] = useState(true);
     const { coinId } = useParams() as unknown as RouteParams;
     const { state } = useLocation() as LocationState;
-    const [info, setInfo] = useState({});
+    const [info, setInfo] = useState<InfoData>();
     const [priceInfo, setPriceInfo] = useState({});
 
     useEffect(() => {
