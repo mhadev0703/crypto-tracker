@@ -64,7 +64,16 @@ interface InfoData {
 }
 
 interface PriceData {
-
+    id: string;
+    name: string;
+    symbol: string;
+    rank: number;
+    total_supply: number;
+    max_supply: number;
+    beta_value: number;
+    first_data_at: string;
+    last_updated: string;
+    quotes: any;
 }
 
 function Coin() {
@@ -72,7 +81,7 @@ function Coin() {
     const { coinId } = useParams() as unknown as RouteParams;
     const { state } = useLocation() as LocationState;
     const [info, setInfo] = useState<InfoData>();
-    const [priceInfo, setPriceInfo] = useState({});
+    const [priceInfo, setPriceInfo] = useState<PriceData>();
 
     useEffect(() => {
         const fetchData = async () => {
