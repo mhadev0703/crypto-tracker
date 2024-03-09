@@ -108,11 +108,9 @@ function Coin() {
             try {
                 const infoResponse = await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId}`);
                 const infoData = infoResponse.data;
-                console.log(infoData);
                 
                 const priceResponse = await axios.get(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
                 const priceData = priceResponse.data;
-                console.log(priceData);
                 setInfo(infoData);
                 setPriceInfo(priceData);
             } catch (error) {
