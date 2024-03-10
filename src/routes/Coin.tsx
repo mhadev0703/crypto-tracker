@@ -25,6 +25,20 @@ const Loader = styled.span`
     padding-top: 20px;
 `;
 
+const Overview = styled.div`
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+`;
+
+const OverviewItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
 interface RouteParams {
     coinId: string;
 }
