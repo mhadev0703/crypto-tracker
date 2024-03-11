@@ -37,6 +37,17 @@ const OverviewItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    span:first-child {
+        font-size: 10px;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+`;
+
+const Description = styled.p`
+    margin: 20px 0px;
 `;
 
 interface RouteParams {
@@ -139,7 +150,9 @@ function Coin() {
     return (
         <Container>
             <Header>
-                <Title>{state?.name || "Loading..."}</Title>
+                <Title>
+                    {state?.name || "Loading..."}
+                </Title>
             </Header>
             {loading ? (<Loader>Loading...</Loader>) : null}
         </Container> 
