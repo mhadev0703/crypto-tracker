@@ -151,7 +151,7 @@ function Coin() {
         <Container>
             <Header>
                 <Title>
-                    {state?.name || "Loading..."}
+                    {state?.name ? state.name : loading ? "Loading..." : info?.name}
                 </Title>
             </Header>
             {loading ? (<Loader>Loading...</Loader>) : null}
