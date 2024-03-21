@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -53,32 +55,11 @@ const Img = styled.img`
     margin-right: 10px;
 `;
 
-interface CoinInterface {
-    id: string,
-    name: string,
-    symbol: string,
-    rank: number,
-    is_new: boolean,
-    is_active: boolean,
-    type: string,
-}
-
 function Coins() {
-    const [coins, setCoins] = useState<CoinInterface[]>([]);
-    const [loading, setLoading] = useState(true);
-    const getCoins = async () => {
-        try {
-          const response = await axios("https://api.coinpaprika.com/v1/coins");
-          setCoins(response.data.slice(0, 100));
-        } catch (error) {
-          console.error("Error fetching coins:", error);
-        } finally {
-          setLoading(false); 
-        }
-      };
-
-    useEffect(() => {
-        getCoins();
+    const { isLoading, data } = useQuery({
+        queryKey: ["allcoins"],
+        queryFn: fetchCoins,
+        select: data => data.slice(0, 100)
     });
 
     return (
@@ -86,11 +67,11 @@ function Coins() {
             <Header>
                 <Title>Coin</Title>
             </Header>
-            {loading ? (
+            {isLoading ? (
                 <Loader>Loading...</Loader>
             ) : (
                 <CoinsList>
-                {coins.map((coin) => (
+                {data?.map((coin) => (
                     <Coin key={coin.id}>
                         <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                             <Img 
