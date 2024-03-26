@@ -4,6 +4,8 @@ import styled from "styled-components";
 import axios from 'axios';
 import Chart from "./Chart";
 import Price from "./Price";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoinInfo } from "../api";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -141,14 +143,24 @@ interface PriceData {
 }
 
 function Coin() {
-    const [loading, setLoading] = useState(true);
+    
     const { coinId } = useParams() as unknown as RouteParams;
-    const { state } = useLocation() as LocationState;
-    const [info, setInfo] = useState<InfoData>();
-    const [priceInfo, setPriceInfo] = useState<PriceData>();
+    const { state } = useLocation() as LocationState;    
     const priceMatch = useMatch("/:coinId/price");
     const chartMatch = useMatch("/:coinId/chart");
+    const { isLoading: infoLoading, data: infoData} = useQuery(
+        ["info", coinId],
+        () => fetchCoinInfo(coinId)
+    );
+    const { isLoading: tickersLoading, data: tickersData} = useQuery(
+        ["tickers", coinId],
+        () => fetchCoinTickers(coinId)
+    );
 
+    {/*    
+    const [loading, setLoading] = useState(true);
+    const [info, setInfo] = useState<InfoData>();
+    const [priceInfo, setPriceInfo] = useState<PriceData>();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -169,7 +181,9 @@ function Coin() {
         };
         fetchData();
     }, [coinId]); 
+    */}
 
+    const loading = infoLoading || tickersLoading;
     return (
         <Container>
             <Header>
