@@ -17,13 +17,13 @@ export async function fetchCoins() {
 }
 
 export async function fetchCoinInfo(coinId: string) {
-    const coins: ICoin[] = await fetch (
-        `${BASE_URL}/coins/${coinId}`).then((response) => response.json());
-    return coins.slice(0, 100);
+    return fetch(`${BASE_URL}/coins/${coinId}`).then((response) =>
+      response.json()
+    );
 }
-
+ 
 export async function fetchCoinTickers(coinId: string) {
-    const coins: ICoin[] = await fetch (
-        `${BASE_URL}/tickers/${coinId}`).then((response) => response.json());
-    return coins.slice(0, 100);
+    return fetch(`${BASE_URL}/tickers/${coinId}`).then((response) =>
+      response.json()
+    );
 }
