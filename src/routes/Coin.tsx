@@ -5,7 +5,7 @@ import axios from 'axios';
 import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoinInfo } from "../api";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -61,7 +61,7 @@ const Tabs = styled.div`
     gap: 10px;
 `;
 
-const Tab = styled.span<{ isActive:boolean }>`
+const Tab = styled.span<{ $isActive:boolean }>`
     text-align: center;
     text-transform: uppercase;
     font-size: 12px;
@@ -69,7 +69,7 @@ const Tab = styled.span<{ isActive:boolean }>`
     background-color: rgba(0, 0, 0, 0.5);
     padding: 7px 0px;
     border-radius: 10px;
-    color: ${props => props.isActive ? props.theme.accentColor : props.theme.textColor};
+    color: ${props => props.$isActive ? props.theme.accentColor : props.theme.textColor};
     a {
         display: block;
     }
@@ -85,7 +85,6 @@ interface LocationState {
         rank: number;
     }
 }
-
 
 interface InfoData {
     id: string;
@@ -148,47 +147,24 @@ function Coin() {
     const { state } = useLocation() as LocationState;    
     const priceMatch = useMatch("/:coinId/price");
     const chartMatch = useMatch("/:coinId/chart");
-    const { isLoading: infoLoading, data: infoData} = useQuery(
-        ["info", coinId],
-        () => fetchCoinInfo(coinId)
-    );
-    const { isLoading: tickersLoading, data: tickersData} = useQuery(
-        ["tickers", coinId],
-        () => fetchCoinTickers(coinId)
-    );
 
-    {/*    
-    const [loading, setLoading] = useState(true);
-    const [info, setInfo] = useState<InfoData>();
-    const [priceInfo, setPriceInfo] = useState<PriceData>();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const infoResponse = await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId}`);
-                const infoData = infoResponse.data;
-                
-                const priceResponse = await axios.get(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
-                const priceData = priceResponse.data;
+    const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>({
+        queryKey: ["info", coinId],
+        queryFn: () => fetchCoinInfo(coinId),
+    });
 
-                setInfo(infoData);
-                setPriceInfo(priceData);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false); 
-            }
-        };
-        fetchData();
-    }, [coinId]); 
-    */}
-
+    const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>({
+        queryKey: ["tickers", coinId],
+        queryFn: () => fetchCoinTickers(coinId),
+    });
+    
     const loading = infoLoading || tickersLoading;
+
     return (
         <Container>
             <Header>
                 <Title>
-                    {state?.name ? state.name : loading ? "Loading..." : info?.name}
+                    {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </Title>
             </Header>
             {loading ? (
@@ -198,34 +174,34 @@ function Coin() {
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
-                            <span>{info?.rank}</span>
+                            <span>{infoData?.rank}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Symbol:</span>
-                            <span>${info?.symbol}</span>
+                            <span>${infoData?.symbol}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Open Source:</span>
-                            <span>{info?.open_source}</span>
+                            <span>{infoData?.open_source}</span>
                         </OverviewItem>
                     </Overview>
-                    <Description>{info?.description}</Description>
+                    <Description>{infoData?.description}</Description>
                     <Overview>
                         <OverviewItem>
                             <span>Total Supply:</span>
-                            <span>{priceInfo?.total_supply}</span>
+                            <span>{tickersData?.total_supply}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Max Supply:</span>
-                            <span>{priceInfo?.max_supply}</span>
+                            <span>{tickersData?.max_supply}</span>
                         </OverviewItem>
                     </Overview>
 
                     <Tabs>
-                        <Tab isActive={chartMatch !== null}>
+                        <Tab $isActive={chartMatch !== null}>
                             <Link to={`/${coinId}/chart`}>Chart</Link>
                         </Tab>
-                        <Tab isActive={priceMatch !== null}>
+                        <Tab $isActive={priceMatch !== null}>
                             <Link to={`/${coinId}/price`}>Price</Link>
                         </Tab>
                     </Tabs>
