@@ -61,6 +61,11 @@ function Chart({ coinId }: ChartProps) {
                             axisTicks: { show: false },
                             labels: { show: false },
                         },
+                        fill: { 
+                            type: "gradient", 
+                            gradient: { gradientToColors: ["blue"], stops: [0, 100] },
+                        },
+                        colors: ["red"],
                     }}
                 />
             )}
