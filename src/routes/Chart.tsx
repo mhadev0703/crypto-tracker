@@ -65,8 +65,12 @@ function Chart({ coinId }: ChartProps) {
                             type: "gradient", 
                             gradient: { gradientToColors: ["blue"], stops: [0, 100] },
                         },
-                        
                         colors: ["red"],
+                        tooltip: {
+                            y: {
+                                formatter: (value) => `$${value.toFixed(2)}`,
+                            },
+                        },
                     }}
                 />
             )}
