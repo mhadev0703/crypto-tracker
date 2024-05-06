@@ -60,10 +60,12 @@ function Chart({ coinId }: ChartProps) {
                             axisBorder: { show: false },
                             axisTicks: { show: false },
                             labels: { show: false },
+                            type: "datetime",
+                            categories: data?.map((price) => price.time_close),
                         },
                         fill: { 
                             type: "gradient", 
-                            gradient: { gradientToColors: ["blue"], stops: [0, 100] },
+                            gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
                         },
                         colors: ["red"],
                         tooltip: {
