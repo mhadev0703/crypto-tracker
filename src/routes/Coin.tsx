@@ -1,4 +1,5 @@
 import { useMatch, useLocation, useParams, Routes, Route, Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
@@ -160,6 +161,11 @@ function Coin() {
 
     return (
         <Container>
+            <Helmet>
+                <title>
+                    {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+                </title>
+            </Helmet>
             <Header>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
