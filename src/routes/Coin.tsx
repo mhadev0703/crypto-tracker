@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoinInfo, fetchCoinTickers } from "../api";
+//import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { fetchCoinInfo } from "../api";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -85,6 +86,7 @@ interface LocationState {
     }
 }
 
+{/*
 interface InfoData {
     id: string;
     name: string;
@@ -139,6 +141,30 @@ interface PriceData {
         };
     };
 }
+*/}
+
+interface InfoData {
+    id: string;
+    name: string;
+    symbol: string;
+    coingecko_rank: number;
+    description: { en: string };
+    market_data: {
+        current_price: {
+            usd: number;
+        };
+        max_supply: number;
+        total_supply: number;
+        circulating_supply: number;
+    };
+}
+
+// Strip HTML function defined outside the component 
+function stripHtml(html: string): string {
+    var tempElement = document.createElement("div");
+    tempElement.innerHTML = html;
+    return tempElement.textContent || tempElement.innerText || "";
+}
 
 function Coin() {
     
@@ -147,17 +173,28 @@ function Coin() {
     const priceMatch = useMatch("/:coinId/price");
     const chartMatch = useMatch("/:coinId/chart");
 
+    {/*
     const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>({
         queryKey: ["info", coinId],
         queryFn: () => fetchCoinInfo(coinId),
     });
 
+    
     const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>({
         queryKey: ["tickers", coinId],
         queryFn: () => fetchCoinTickers(coinId),
     });
+   
     
     const loading = infoLoading || tickersLoading;
+    */}
+
+    const { isLoading: infoLoading, data: infoData} = useQuery<InfoData>({
+        queryKey: ["coinData", coinId],
+        queryFn: () => fetchCoinInfo(coinId),
+    });
+
+    const loading = infoLoading;
 
     return (
         <Container>
@@ -178,7 +215,7 @@ function Coin() {
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
-                            <span>{infoData?.rank}</span>
+                            <span>{infoData?.coingecko_rank}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Symbol:</span>
@@ -186,18 +223,18 @@ function Coin() {
                         </OverviewItem>
                         <OverviewItem>
                             <span>Price:</span>
-                            <span>{tickersData?.quotes.USD.price}</span>
+                            <span>{infoData?.market_data.current_price.usd}</span>
                         </OverviewItem>
                     </Overview>
-                    <Description>{infoData?.description}</Description>
+                    <Description>{infoData?.description.en ? stripHtml(infoData.description.en) : 'No description available'}</Description>
                     <Overview>
                         <OverviewItem>
                             <span>Total Supply:</span>
-                            <span>{tickersData?.total_supply}</span>
+                            <span>{infoData?.market_data.total_supply}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Max Supply:</span>
-                            <span>{tickersData?.max_supply}</span>
+                            <span>{infoData?.market_data.max_supply}</span>
                         </OverviewItem>
                     </Overview>
 
