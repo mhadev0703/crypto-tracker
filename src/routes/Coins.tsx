@@ -73,7 +73,8 @@ function Coins() {
                     <Coin key={coin.id}>
                         <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                             <Img 
-                                src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`} 
+                                src={coin.image.small} 
+                                alt={`Image of ${coin.name}`}
                             />
                             {coin.name} &rarr;
                         </Link>
