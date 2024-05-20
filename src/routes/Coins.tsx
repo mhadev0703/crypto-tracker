@@ -53,11 +53,28 @@ const Img = styled.img`
     margin-right: 10px;
 `;
 
+interface InfoData {
+    id: string;
+    name: string;
+    symbol: string;
+    market_cap_rank: number;
+    image: string;
+    description: { en: string };
+    market_data: {
+        current_price: {
+            usd: number;
+        };
+        max_supply: number;
+        total_supply: number;
+        circulating_supply: number;
+    };
+}
+
 function Coins() {
-    const { isLoading, data } = useQuery({
+    const { isLoading, data } = useQuery<InfoData[]>({
         queryKey: ["allcoins"],
         queryFn: fetchCoins,
-        select: data => data.slice(0, 100)
+        select: data => data.slice(0, 50),
     });
 
     return (
@@ -73,8 +90,7 @@ function Coins() {
                     <Coin key={coin.id}>
                         <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                             <Img 
-                                src={coin.image.small} 
-                                alt={`Image of ${coin.name}`}
+                                src={coin.image} 
                             />
                             {coin.name} &rarr;
                         </Link>
