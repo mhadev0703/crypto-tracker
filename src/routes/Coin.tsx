@@ -147,7 +147,7 @@ interface InfoData {
     id: string;
     name: string;
     symbol: string;
-    coingecko_rank: number;
+    market_cap_rank: number;
     description: { en: string };
     market_data: {
         current_price: {
@@ -215,7 +215,7 @@ function Coin() {
                     <Overview>
                         <OverviewItem>
                             <span>Rank:</span>
-                            <span>{infoData?.coingecko_rank}</span>
+                            <span>{infoData?.market_cap_rank}</span>
                         </OverviewItem>
                         <OverviewItem>
                             <span>Symbol:</span>
@@ -223,7 +223,7 @@ function Coin() {
                         </OverviewItem>
                         <OverviewItem>
                             <span>Price:</span>
-                            <span>{infoData?.market_data.current_price.usd}</span>
+                            <span>${infoData?.market_data.current_price.usd.toFixed(2)}</span>
                         </OverviewItem>
                     </Overview>
                     <Description>{infoData?.description.en ? stripHtml(infoData.description.en) : 'No description available'}</Description>
