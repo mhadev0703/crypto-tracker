@@ -2,26 +2,25 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 
-interface IHistorical {
-    time_open: string;
-    time_close: string;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    volume: number;
-    market_cap: number;
-}
 
-interface ChartProps {
+export interface ChartProps {
     coinId: string;
+    isDark: boolean;
 }
 
-function Chart({ coinId }: ChartProps) {
-    const { isLoading, data } = useQuery<IHistorical[]>({
+function Chart({ coinId, isDark }: ChartProps) {
+    const { isLoading, data } = useQuery<number[][]>({   
         queryKey: ["ohlcv", coinId], 
         queryFn: () => fetchCoinHistory(coinId),
     });
+
+    console.log(data);
+
+    // Data processing for chart
+    const processedData = data?.map((entry) => ({
+        x: new Date(entry[0]),
+        y: entry[4],
+    })) ?? [];
     
     return (
         <div>
@@ -33,12 +32,12 @@ function Chart({ coinId }: ChartProps) {
                     series={[
                         {   
                             name: "Price",
-                            data: data?.map((price) => price.close) ?? [],
+                            data: processedData,
                         },
                     ]}
                     options={{
                         theme: {
-                            mode: "dark",
+                            mode: isDark ? "dark" : "light",
                         },
                         chart: {
                             height: 300,
@@ -57,11 +56,13 @@ function Chart({ coinId }: ChartProps) {
                             show: false,
                         },
                         xaxis: {
-                            axisBorder: { show: false },
-                            axisTicks: { show: false },
-                            labels: { show: false },
+                            axisBorder: { show: true },
+                            axisTicks: { show: true },
+                            labels: { show: true },
+                            //, datetimeFormatter: {month: "mmm 'yy"}
                             type: "datetime",
-                            categories: data?.map((price) => price.time_close),
+                            //categories: data?.map((price) => price.time_close),
+                            categories: data?.map((price) => price[0])
                         },
                         fill: { 
                             type: "gradient", 
