@@ -108,11 +108,7 @@ function stripHtml(html: string): string {
     return tempElement.textContent || tempElement.innerText || "";
 }
 
-interface ICoinsProps {
-    isDark: boolean;
-}
-
-function Coin({ isDark }: ICoinsProps) {
+function Coin() {
     
     const { coinId } = useParams() as unknown as RouteParams;
     const { state } = useLocation() as LocationState;    
@@ -178,7 +174,7 @@ function Coin({ isDark }: ICoinsProps) {
                     </Tabs>
                     
                     <Routes>
-                        <Route path="chart" element={<Chart coinId={coinId} isDark={isDark} />} />
+                        <Route path="chart" element={<Chart coinId={coinId} />} />
                         <Route path="price" element={<Price coinId={coinId} />} />
                     </Routes>
                 </>
