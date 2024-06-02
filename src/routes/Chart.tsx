@@ -15,6 +15,7 @@ function Chart({ coinId }: ChartProps) {
     const { isLoading, data } = useQuery<number[][]>({   
         queryKey: ["ohlcv", coinId], 
         queryFn: () => fetchCoinHistory(coinId),
+        refetchInterval: 30 * 60 * 1000,
     });
 
     console.log(data);
@@ -62,9 +63,7 @@ function Chart({ coinId }: ChartProps) {
                             axisBorder: { show: true },
                             axisTicks: { show: true },
                             labels: { show: true },
-                            //, datetimeFormatter: {month: "mmm 'yy"}
                             type: "datetime",
-                            //categories: data?.map((price) => price.time_close),
                             categories: data?.map((price) => price[0])
                         },
                         fill: { 
