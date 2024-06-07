@@ -8,18 +8,37 @@ import { fetchCoinInfo } from "../api";
 
 const Container = styled.div`
     padding: 0px 20px;
+    max-width: 60%;
+    margin: 10px auto 0 auto;
+    position: relative;
 `;
 
 const Header = styled.header`
     height: 10vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 `;
 
 const Title = styled.h1`
     font-size: 48px;
     color: ${props => props.theme.accentColor};
+    margin: 0 auto;
+`;
+
+const Back = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 20px;
+  border-radius: 10px;
+  color: ${(props) => props.theme.textColor};
+  padding: 8px 4px;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+  }
+  a {
+    padding: 8px 4px;
+  }
 `;
 
 const Loader = styled.span`
@@ -40,7 +59,6 @@ const OverviewItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
     span:first-child {
         font-size: 10px;
         font-weight: 400;
@@ -50,7 +68,8 @@ const OverviewItem = styled.div`
 `;
 
 const Description = styled.p`
-    margin: 20px 0px;
+    margin: 20px 30px;
+    line-height: 1.5;
 `;
 
 const Tabs = styled.div`
@@ -129,6 +148,9 @@ function Coin() {
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </title>
             </Helmet>
+            <Back>
+                <Link to="/">&larr; Back</Link>
+            </Back>
             <Header>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
