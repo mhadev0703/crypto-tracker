@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isDarkAtom } from "../atoms";
-import { FaMoon, FaSun } from "react-icons/fa"; 
 
 const Container = styled.div`
     padding: 0px 20px;
+    max-width: 600px;
+    margin: 10px auto 0 auto;
 `;
 
 const Header = styled.header`
@@ -18,28 +17,14 @@ const Header = styled.header`
     align-items: center;
 `;
 
-const ToggleButton = styled.button`
-    border: none;
-    background-color: ${(props) => props.theme.textColor};
-    padding: 14px;
-    display: flex;
-    color: ${(props) => props.theme.bgColor};
-    border-radius: 15px;
-    &:hover {
-        cursor: pointer;
-    }
-    position: absolute;
-    right: 0;
-    margin-top: 10px;
-`;
-
 const CoinsList = styled.ul`
     padding-inline-start: 0px;
+    margin-top: 10px;
 `;
 
 const Coin = styled.li`
     background-color: white;
-    color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.nameColor};
     border-radius: 15px;
     margin-bottom: 10px;
     a {
@@ -91,9 +76,6 @@ interface InfoData {
 
 
 function Coins() {
-    const setDarkAtom = useSetRecoilState(isDarkAtom);
-    const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
-    const isDark = useRecoilValue(isDarkAtom);
     const { isLoading, data } = useQuery<InfoData[]>({
         queryKey: ["allcoins"],
         queryFn: fetchCoins,
@@ -107,9 +89,6 @@ function Coins() {
             </Helmet>
             <Header>
                 <Title>CryptoTracker</Title>
-                <ToggleButton onClick={toggleDarkAtom}>
-                  {isDark ? <FaSun /> : <FaMoon />}
-                </ToggleButton>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
