@@ -7,6 +7,8 @@ export const darkTheme: DefaultTheme = {
     accentColor: "#9c88ff",
     toggleColor: "whitesmoke",
     iconColor: "#fDB813",
+    positiveColor: "green",
+    negativeColor: "red",
 };
   
   export const lightTheme: DefaultTheme = {
@@ -16,4 +18,6 @@ export const darkTheme: DefaultTheme = {
     accentColor: "#9c88ff",
     toggleColor: "#2f3640",
     iconColor: "#f0c420",
+    positiveColor: "green",
+    negativeColor: "red",
 };
