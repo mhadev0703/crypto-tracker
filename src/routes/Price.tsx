@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo } from "../api";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import styled, { useTheme } from "styled-components";
 
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
-  padding-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Box = styled.div`
@@ -109,9 +109,9 @@ function Price({ coinId }: PriceProps) {
   const renderBox = (period: string, value: number) => (
     <Box key={period}>
       {value < 0 ? (
-        <FaArrowDown size={64} color={theme.negativeColor} />
+        <FaArrowTrendDown size={60} color={theme.negativeColor} />
       ) : (
-        <FaArrowUp size={64} color={theme.positiveColor} />
+        <FaArrowTrendUp size={60} color={theme.positiveColor} />
       )}
       <Percentage isDecreasing={value < 0}>
         <span>{period}</span>
