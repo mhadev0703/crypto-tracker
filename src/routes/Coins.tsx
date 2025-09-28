@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -15,7 +16,14 @@ const Header = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 10px;
+    position: relative;
+    
+    @media (max-width: 480px) {
+        padding: 0 5px;
+    }
 `;
+
 
 const CoinsList = styled.ul`
     padding-inline-start: 0px;
@@ -43,6 +51,14 @@ const Coin = styled.li`
 const Title = styled.h1`
     font-size: 48px;
     color: ${props => props.theme.accentColor};
+    
+    @media (max-width: 480px) {
+        font-size: 32px;
+    }
+    
+    @media (max-width: 320px) {
+        font-size: 24px;
+    }
 `;
 
 const Loader = styled.span`
@@ -89,6 +105,7 @@ function Coins() {
             </Helmet>
             <Header>
                 <Title>CryptoTracker</Title>
+                <DarkModeToggle />
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
