@@ -5,6 +5,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo } from "../api";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -18,13 +19,28 @@ const Header = styled.header`
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 10px;
+    position: relative;
+    
+    @media (max-width: 480px) {
+        padding: 0 5px;
+    }
 `;
 
 const Title = styled.h1`
     font-size: 48px;
     color: ${props => props.theme.accentColor};
-    margin: 0 auto;
+    margin: 0;
+    
+    @media (max-width: 480px) {
+        font-size: 32px;
+    }
+    
+    @media (max-width: 320px) {
+        font-size: 24px;
+    }
 `;
+
 
 const Back = styled.div`
   position: absolute;
@@ -155,6 +171,7 @@ function Coin() {
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </Title>
+                <DarkModeToggle />
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
