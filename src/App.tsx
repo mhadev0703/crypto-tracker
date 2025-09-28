@@ -1,9 +1,8 @@
 import Router from "./Router";
-import { styled, ThemeProvider, createGlobalStyle } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./atoms";
-import { FaMoon, FaSun } from "react-icons/fa"; 
 //import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
@@ -70,36 +69,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const ToggleButton = styled.button`
-    border: none;
-    background-color: ${(props) => props.theme.toggleColor};
-    padding: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: ${(props) => props.theme.iconColor};
-    border-radius: 15px;
-    &:hover {
-        cursor: pointer;
-    }
-    position: absolute;
-    top: 37px;
-    right: 38%;
-    z-index: 1;
-`;
 
 function App() {
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   const isDark = useRecoilValue(isDarkAtom);
 
   return  (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
-        <ToggleButton onClick={toggleDarkAtom}>
-          {isDark ? <FaSun /> : <FaMoon />}
-        </ToggleButton>
         <Router />
         {/*<ReactQueryDevtools initialIsOpen={true} />*/}
       </ThemeProvider>
